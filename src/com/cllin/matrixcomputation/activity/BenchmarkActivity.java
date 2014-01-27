@@ -1,7 +1,5 @@
 package com.cllin.matrixcomputation.activity;
 
-import com.cllin.matrixcomputation.R;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,20 +11,24 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.cllin.matrixcomputation.R;
+import com.cllin.matrixcomputation.runnable.BenchmarkRunnable;
+
 public class BenchmarkActivity extends Activity implements OnClickListener {
 	private static final String MSG_TAG = "MatrixComputationActivity";
 	
-//	private static final int FLAG_DEFAULT = 0;
-//	private static final int FLAG_FULL_SCRIPT = 1;
-//	private static final int FLAG_SCRIPT_LITE = 2;
-//	private static final int FLAG_SHOW_OUTPUT = 10; 
-//	private static final int FLAG_SHOW_PROGRESS = 20;
+	@SuppressWarnings("unused")
+	private static final int FLAG_DEFAULT = 0;
+	private static final int FLAG_FULL_SCRIPT = 1;
+	private static final int FLAG_SCRIPT_LITE = 2;
+	private static final int FLAG_SHOW_OUTPUT = 10; 
+	private static final int FLAG_SHOW_PROGRESS = 20;
 	
 //	VIEWS
 	private ProgressBar mProgressBar = null;
 	private TextView mOutputTextView = null;
-	private Button mComputeWithFullScriptButton = (Button)findViewById(R.id.button_matrixcomputation_fullscript);
-	private Button mComputeWithScriptLiteButton = (Button)findViewById(R.id.button_matrixcomputation_scriptlite);
+	private Button mComputeWithFullScriptButton = null;
+	private Button mComputeWithScriptLiteButton = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -63,48 +65,48 @@ public class BenchmarkActivity extends Activity implements OnClickListener {
 	
 	@Override
 	public void onClick(View v) {
-//		mProgressBar.setProgress(0);
-//		BenchmarkRunnable runnable = null;
-//		
-//		switch(v.getId()){
-//		case R.id.button_matrixcomputation_fullscript:
-//			runnable = new BenchmarkRunnable(FLAG_FULL_SCRIPT, mHandler, this.getBaseContext());
-//			break;
-//		case R.id.button_matrixcomputation_scriptlite:
-//			runnable = new BenchmarkRunnable(FLAG_SCRIPT_LITE, mHandler, this.getBaseContext());
-//			break;
-//		}
-//		
-//		Thread thread = new Thread(runnable);
-//		thread.start();
-//		
-//		thread = null;
-//		
-//		v.setPressed(false);
+		mProgressBar.setProgress(0);
+		BenchmarkRunnable runnable = null;
+		
+		switch(v.getId()){
+		case R.id.button_matrixcomputation_fullscript:
+			runnable = new BenchmarkRunnable(FLAG_FULL_SCRIPT, mHandler, this.getBaseContext());
+			break;
+		case R.id.button_matrixcomputation_scriptlite:
+			runnable = new BenchmarkRunnable(FLAG_SCRIPT_LITE, mHandler, this.getBaseContext());
+			break;
+		}
+		
+		Thread thread = new Thread(runnable);
+		thread.start();
+		
+		thread = null;
+		
+		v.setPressed(false);
 	}
 	
-//    private Handler mHandler = new Handler(){
-//		@Override
-//		public void handleMessage(final Message msg) {
-//			switch(msg.what){
-//				case FLAG_SHOW_OUTPUT:
-//					this.post(new Runnable() {
-//						@Override
-//						public void run() {
-//							setTextView(msg.obj.toString());
-//						}
-//					});
-//					break;
-//				case FLAG_SHOW_PROGRESS:
-//					mProgressBar.post(new Runnable(){
-//						@Override
-//						public void run() {
-//							setProgressBar(msg);
-//						}
-//					});
-//					break;
-//			}
-//			super.handleMessage(msg);
-//		}
-//    };
+    private Handler mHandler = new Handler(){
+		@Override
+		public void handleMessage(final Message msg) {
+			switch(msg.what){
+				case FLAG_SHOW_OUTPUT:
+					this.post(new Runnable() {
+						@Override
+						public void run() {
+							setTextView(msg.obj.toString());
+						}
+					});
+					break;
+				case FLAG_SHOW_PROGRESS:
+					mProgressBar.post(new Runnable(){
+						@Override
+						public void run() {
+							setProgressBar(msg);
+						}
+					});
+					break;
+			}
+			super.handleMessage(msg);
+		}
+    };
 }

@@ -5,15 +5,18 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
+import com.cllin.matrixcomputation.computation.EigenMatrixComputation;
+import com.cllin.matrixcomputation.computation.JavaMatrixComputation;
+import com.cllin.matrixcomputation.computation.RenderScriptComputation;
 import com.cllin.matrixcomputation.data.BenchmarkResult;
 import com.cllin.matrixcomputation.data.BenchmarkResult.Test;
 import com.cllin.matrixcomputation.utility.MatrixFactory;
-import com.cllin.matrixcomputation.utility.Recorder;
-import com.cllin.matrixcomputation.utility.TimeManager;
+import com.cllin.matrixcomputation.utility.RecordWriter;
+import com.cllin.matrixcomputation.utility.TimeRecorder;
 
 public class MatrixComputationBenchmark {
 	private static final String MSG_TAG = "MatrixComputationBenchmark";
-	private static final String LIBRARY = "matrixcomputation";
+	private static final String LIBRARY = "matrixfromnative";
 	private static final String MSG_COMPUTAION_CORRECT = "The result from Native and Java is identical";
 	private static final String MSG_COMPUTAION_INCORRECT = "Oops, something went wrong";
 	
@@ -26,7 +29,7 @@ public class MatrixComputationBenchmark {
 	private int nTests = 1;
 	private int[] mTestScript;
 	
-	private TimeManager mTimeManager;
+	private TimeRecorder mTimeRecorder;
 	
 	private Handler mHandler;
 	private Context mContext;
@@ -36,8 +39,8 @@ public class MatrixComputationBenchmark {
 		mContext = context;
 	}
 
-	public void runBenchmarkTest(int flag){
-		switch(flag){
+	public void runBenchmarkTest(int flag) { 
+		switch (flag) {
 		case FLAG_FULL_SCRIPT:
 			nTests = 1;
 			mTestScript = new int[]{500, 600, 700, 800, 900, 1000, 2000, 3000};
@@ -49,33 +52,34 @@ public class MatrixComputationBenchmark {
 		}
 		
 		BenchmarkResult result = new BenchmarkResult(nTests);
-		mTimeManager = new TimeManager(nTests);
+		mTimeRecorder = new TimeRecorder(nTests);
 		
 		Message msg;
 		
-		mTimeManager.recordNow(TimeManager.KEY_ENTIRE_START);
-		for(int i = 0; i < mTestScript.length; i++){
+		mTimeRecorder.recordNow(TimeRecorder.KEY_ENTIRE_START);
+		for (int i = 0; i < mTestScript.length; i++) {
 			Log.d(MSG_TAG, "size=" + mTestScript[i]);
+
 			int size = mTestScript[i];
-			mTimeManager.recordNow(TimeManager.KEY_INITIALIZATION_START);
+			
+			mTimeRecorder.recordNow(TimeRecorder.KEY_INITIALIZATION_START);
 			float[][] a = MatrixFactory.getFloatMatrix(size, size);
 			float[][] b = MatrixFactory.getFloatMatrix(size, size);
-			mTimeManager.recordNow(TimeManager.KEY_INITIALIZATION_END);
+			mTimeRecorder.recordNow(TimeRecorder.KEY_INITIALIZATION_END);
 			
-//			TODO
-//			benchmarkTestNative(a, b);
-//			benchmarkTestJava(a, b);
-//			benchmarkTestOpenCV(a, b);
-//			benchmarkTestEigen(a, b);
-//			benchmarkTestRenderScript(a, b);
+			benchmarkTestNative(a, b);
+			benchmarkTestJava(a, b);
+			benchmarkTestOpenCV(a, b);
+			benchmarkTestEigen(a, b);
+			benchmarkTestRenderScript(a, b);
 			
 			result.addTest(result.new Test(size, 
-					mTimeManager.getTime(TimeManager.FLAG_GET_INITIALIZE), 
-					mTimeManager.getTime(TimeManager.FLAG_GET_JAVA), 
-					mTimeManager.getTime(TimeManager.FLAG_GET_NATIVE), 
-					mTimeManager.getTime(TimeManager.FLAG_GET_OPENCV), 
-					mTimeManager.getTime(TimeManager.FLAG_GET_EIGEN),
-					mTimeManager.getTime(TimeManager.FLAG_GET_RENDERSCRIPT)));
+					mTimeRecorder.getTime(TimeRecorder.FLAG_GET_INITIALIZE), 
+					mTimeRecorder.getTime(TimeRecorder.FLAG_GET_JAVA), 
+					mTimeRecorder.getTime(TimeRecorder.FLAG_GET_NATIVE), 
+					mTimeRecorder.getTime(TimeRecorder.FLAG_GET_OPENCV), 
+					mTimeRecorder.getTime(TimeRecorder.FLAG_GET_EIGEN),
+					mTimeRecorder.getTime(TimeRecorder.FLAG_GET_RENDERSCRIPT)));
 			
 			msg = Message.obtain();
 			msg.what = FLAG_SHOW_PROGRESS;
@@ -84,8 +88,8 @@ public class MatrixComputationBenchmark {
 			msg.obj = size;
 			mHandler.dispatchMessage(msg);
 		}
-		mTimeManager.recordNow(TimeManager.KEY_ENTIRE_END);
-		result.setTotal(mTimeManager.getTime(TimeManager.FLAG_GET_ENTIRE));
+		mTimeRecorder.recordNow(TimeRecorder.KEY_ENTIRE_END);
+		result.setTotal(mTimeRecorder.getTime(TimeRecorder.FLAG_GET_ENTIRE));
 		
 		String output = "Nothing returned!";
 		output = parseResult(result);
@@ -93,80 +97,84 @@ public class MatrixComputationBenchmark {
 		msg = mHandler.obtainMessage(FLAG_SHOW_OUTPUT, output);
 		mHandler.dispatchMessage(msg);
 		
-		Recorder recorder = new Recorder();
+		RecordWriter recorder = new RecordWriter();
 		recorder.record(result);
 		
 		Log.d(MSG_TAG, "Finished");
 	}
 	
-//	private void benchmarkTestNative(float[][] a, float[][] b){
-//		mTimeManager.recordNow(TimeManager.KEY_NATIVE_START);
-////		for(int i = 0; i < nTests; i++){
-////			matrixComputationByNative(a, b);
-////		}
-//		mTimeManager.recordNow(TimeManager.KEY_NATIVE_END);
-//	}
-//	
-//	private void benchmarkTestJava(float[][] a, float[][] b){
-////		JavaMatrixComputation computation = new JavaMatrixComputation();
-//		mTimeManager.recordNow(TimeManager.KEY_JAVA_START);
-////		for(int i = 0; i < nTests; i++){
-////			computation.matrixMultiplication(a, b);
-////		}
-//		mTimeManager.recordNow(TimeManager.KEY_JAVA_END);
-//	}
-//	
-//	private void benchmarkTestOpenCV(float[][] a, float[][] b){
-////		OpenCVMatrixComputation computation = new OpenCVMatrixComputation();
-//		mTimeManager.recordNow(TimeManager.KEY_OPENCV_START);
-////		for(int i = 0; i < nTests; i++){
-////			computation.matrixMultiplication(a, b);
-////		}
-//		mTimeManager.recordNow(TimeManager.KEY_OPENCV_END);
-//	}
-//	
-//	private void benchmarkTestEigen(float[][] a, float[][] b){
-////		EigenMatrixComputation computation = new EigenMatrixComputation();
-//		mTimeManager.recordNow(TimeManager.KEY_EIGEN_START);
-////		for(int i = 0; i < nTests; i++){
-////			computation.matrixMultiplication(a, b);
-////		}
-//		mTimeManager.recordNow(TimeManager.KEY_EIGEN_END);	
-//	}
-//	
-//	private void benchmarkTestRenderScript(float[][] a, float[][] b){
-//		RenderScriptComputation computation = new RenderScriptComputation(mContext);
-//		mTimeManager.recordNow(TimeManager.KEY_RENDERSCRIPT_START);	
-//		for(int i = 0; i < nTests; i++){
-//			computation.matrixMultiplication(a, b);
-//		}
-//		mTimeManager.recordNow(TimeManager.KEY_RENDERSCRIPT_END);	
-//	}
+	private void benchmarkTestNative(float[][] a, float[][] b){
+		mTimeRecorder.recordNow(TimeRecorder.KEY_NATIVE_START);
+		try {
+			for (int i = 0; i < nTests; i++) matrixComputationByNative(a, b);
+		} catch (Exception e) {
+			e.printStackTrace();
+			Log.e(MSG_TAG, "Error happened when computing in C++");
+		}
+		mTimeRecorder.recordNow(TimeRecorder.KEY_NATIVE_END);
+	}
 	
-////	The method verifies the correctness of the computation by comparing the result from native and Java.
-////	If they are identical, take the result as correct; if not, wrong.	
-//	public String runCorrectnessTest(){
-//		String output;
-//		
-//		int x = 2;
-//		int y = 2;
-//		float[][] a = mMatrixFactory.getFloatMatrix(x, y);
-//		float[][] b = mMatrixFactory.getFloatMatrix(x, y);
-//
-//		JavaMatrixComputation computation = new JavaMatrixComputation();
-//		float[][] resultFromJava = computation.matrixMultiplication(a, b);
-//		float[][] resultFromNative = matrixComputationByNative(a, b);
-//		if(!mMatrixFactory.isIdentical(resultFromNative, resultFromJava)){
-//			output = MSG_COMPUTAION_INCORRECT;
-//		}else{
-//			output = MSG_COMPUTAION_CORRECT;
-//			output += ", the result is\n";
-//			output += mMatrixFactory.getStringFromFloats(resultFromNative);
+	private void benchmarkTestJava(float[][] a, float[][] b) {
+		mTimeRecorder.recordNow(TimeRecorder.KEY_JAVA_START);
+		
+		try {
+			JavaMatrixComputation computation = new JavaMatrixComputation();
+			for (int i = 0; i < nTests; i++) computation.matrixMultiplication(a, b);
+		} catch (Exception e) {
+			e.printStackTrace();
+			Log.e(MSG_TAG, "Error happened when computing in Java");
+		}
+		
+		mTimeRecorder.recordNow(TimeRecorder.KEY_JAVA_END);
+	}
+	
+	/*
+	 * TODO
+	 * Note that the shared objects of OpenCV is stored under /tmp
+	 * Since every build will delete these files, OpenCV is currently disabled 
+	 */
+	private void benchmarkTestOpenCV(float[][] a, float[][] b) {
+		mTimeRecorder.recordNow(TimeRecorder.KEY_OPENCV_START);
+		
+//		try {
+//			OpenCVMatrixComputation computation = new OpenCVMatrixComputation();
+//			for (int i = 0; i < nTests; i++) computation.matrixMultiplication(a, b);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			Log.e(MSG_TAG, "Error happened when computing with OpenCV");
 //		}
-//
-//		return output;
-//	}
-//	
+		
+		mTimeRecorder.recordNow(TimeRecorder.KEY_OPENCV_END);
+	}
+	
+	private void benchmarkTestEigen(float[][] a, float[][] b){
+		mTimeRecorder.recordNow(TimeRecorder.KEY_EIGEN_START);
+		
+		try {
+			EigenMatrixComputation computation = new EigenMatrixComputation();
+			for (int i = 0; i < nTests; i++) computation.matrixMultiplication(a, b);
+		} catch (Exception e) {
+			e.printStackTrace();
+			Log.e(MSG_TAG, "Error happened when computing with Eigen");
+		}
+		
+		mTimeRecorder.recordNow(TimeRecorder.KEY_EIGEN_END);	
+	}
+	
+	private void benchmarkTestRenderScript(float[][] a, float[][] b){
+		mTimeRecorder.recordNow(TimeRecorder.KEY_RENDERSCRIPT_START);	
+		
+		try {
+			RenderScriptComputation computation = new RenderScriptComputation(mContext);
+			for (int i = 0; i < nTests; i++) computation.matrixMultiplication(a, b);
+		} catch (Exception e) {
+			e.printStackTrace();
+			Log.e(MSG_TAG, "Error happened when computing with RenderScript");
+		}
+		
+		mTimeRecorder.recordNow(TimeRecorder.KEY_RENDERSCRIPT_END);	
+	}
+	
 	private String parseResult(BenchmarkResult result){
 		StringBuffer buffer = new StringBuffer();
 		
