@@ -39,5 +39,5 @@ void compute(){
 	int end = rsUptimeNanos();
  	int cost = end - start;
  	rsDebug("size=", rows);
- 	rsDebug("time cost=", cost);
+ 	rsDebug("time cost(ns)=", cost);
 }

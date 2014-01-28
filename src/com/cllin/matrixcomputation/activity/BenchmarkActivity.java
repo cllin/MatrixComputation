@@ -1,7 +1,5 @@
 package com.cllin.matrixcomputation.activity;
 
-import java.util.Arrays;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;

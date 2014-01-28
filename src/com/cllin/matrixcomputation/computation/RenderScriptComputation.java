@@ -24,7 +24,7 @@ public class RenderScriptComputation extends MatrixComputation {
 		if (!super.isValidMatrix(a, b)) throw new Exception("The matrices are invalid");
 		
 //		XXX Assume the matrices have the same size
-		Log.d(MSG_TAG, "Initializing the matrices");
+		long start = System.nanoTime();
 		
 		int rows = a.length;
 		int cols = a[0].length;
@@ -55,7 +55,9 @@ public class RenderScriptComputation extends MatrixComputation {
 		mScript.set_gInputA(mInputMatrixA);
 		mScript.set_gInputB(mInputMatrixB);
 		mScript.set_gScript(mScript);
-		Log.d(MSG_TAG, "Finish initializing the matrices");
+		
+		long end = (System.nanoTime() - start) / 1000000;
+		Log.d(MSG_TAG, "It took " + end + " ms to copy the matrices");
 		
 		mScript.invoke_compute();
 		

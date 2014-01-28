@@ -5,8 +5,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
-import com.cllin.matrixcomputation.computation.EigenMatrixComputation;
-import com.cllin.matrixcomputation.computation.JavaMatrixComputation;
 import com.cllin.matrixcomputation.computation.RenderScriptComputation;
 import com.cllin.matrixcomputation.data.BenchmarkResult;
 import com.cllin.matrixcomputation.data.BenchmarkResult.Test;
@@ -45,7 +43,8 @@ public class MatrixComputationBenchmark {
 		switch (flag) {
 		case FLAG_FULL_SCRIPT:
 			nTests = 1;
-			mTestScript = new int[]{500, 600, 700, 800, 900, 1000, 2000, 3000};
+//			mTestScript = new int[]{500, 600, 700, 800, 900, 1000, 2000, 3000};
+			mTestScript = new int[]{500, 600, 700, 800, 900, 1000, 2000};
 			break;
 		case FLAG_SCRIPT_LITE:
 			nTests = 1;
@@ -107,26 +106,26 @@ public class MatrixComputationBenchmark {
 	
 	private void benchmarkTestNative(float[][] a, float[][] b){
 		mTimeRecorder.recordNow(TimeRecorder.KEY_NATIVE_START);
-		try {
-			for (int i = 0; i < nTests; i++) matrixComputationByNative(a, b);
-		} catch (Exception e) {
-			e.printStackTrace();
-			Log.e(MSG_TAG, "Error happened when computing in C++");
-		}
+//		TODO
+//		try {
+//			for (int i = 0; i < nTests; i++) matrixComputationByNative(a, b);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			Log.e(MSG_TAG, "Error happened when computing in C++");
+//		}
 		mTimeRecorder.recordNow(TimeRecorder.KEY_NATIVE_END);
 	}
 	
 	private void benchmarkTestJava(float[][] a, float[][] b) {
 		mTimeRecorder.recordNow(TimeRecorder.KEY_JAVA_START);
-		
-		try {
-			JavaMatrixComputation computation = new JavaMatrixComputation();
-			for (int i = 0; i < nTests; i++) computation.matrixMultiplication(a, b);
-		} catch (Exception e) {
-			e.printStackTrace();
-			Log.e(MSG_TAG, "Error happened when computing in Java");
-		}
-		
+//		TODO
+//		try {
+//			JavaMatrixComputation computation = new JavaMatrixComputation();
+//			for (int i = 0; i < nTests; i++) computation.matrixMultiplication(a, b);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			Log.e(MSG_TAG, "Error happened when computing in Java");
+//		}
 		mTimeRecorder.recordNow(TimeRecorder.KEY_JAVA_END);
 	}
 	
@@ -151,14 +150,14 @@ public class MatrixComputationBenchmark {
 	
 	private void benchmarkTestEigen(float[][] a, float[][] b){
 		mTimeRecorder.recordNow(TimeRecorder.KEY_EIGEN_START);
-		
-		try {
-			EigenMatrixComputation computation = new EigenMatrixComputation();
-			for (int i = 0; i < nTests; i++) computation.matrixMultiplication(a, b);
-		} catch (Exception e) {
-			e.printStackTrace();
-			Log.e(MSG_TAG, "Error happened when computing with Eigen");
-		}
+//		TODO
+//		try {
+//			EigenMatrixComputation computation = new EigenMatrixComputation();
+//			for (int i = 0; i < nTests; i++) computation.matrixMultiplication(a, b);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			Log.e(MSG_TAG, "Error happened when computing with Eigen");
+//		}
 		
 		mTimeRecorder.recordNow(TimeRecorder.KEY_EIGEN_END);	
 	}
