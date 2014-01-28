@@ -28,15 +28,17 @@ public class MatrixComputationBenchmark {
 	
 	private int nTests = 1;
 	private int[] mTestScript;
+	private boolean[] mScript;
 	
 	private TimeRecorder mTimeRecorder;
 	
 	private Handler mHandler;
 	private Context mContext;
 	
-	public MatrixComputationBenchmark(Handler handler, Context context){
+	public MatrixComputationBenchmark(Handler handler, Context context, boolean[] script){
 		mHandler = handler;
 		mContext = context;
+		mScript = script;
 	}
 
 	public void runBenchmarkTest(int flag) { 

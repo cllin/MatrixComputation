@@ -13,10 +13,10 @@ public class BenchmarkRunnable implements Runnable {
 	
 	private static final int FLAG_DEFAULT = 0;
 	
-	public BenchmarkRunnable(int flag, Handler handler, Context context){
+	public BenchmarkRunnable(int flag, Handler handler, Context context, boolean[] script){
 		mBenchmarkFlag = flag;
 		mHandler = handler;
-		mBenchmark = new MatrixComputationBenchmark(mHandler, context);
+		mBenchmark = new MatrixComputationBenchmark(mHandler, context, script);
 	}
 	
 	public void run(){

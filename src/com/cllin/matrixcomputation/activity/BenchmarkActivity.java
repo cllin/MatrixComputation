@@ -1,5 +1,7 @@
 package com.cllin.matrixcomputation.activity;
 
+import java.util.Arrays;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
@@ -8,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -29,6 +32,12 @@ public class BenchmarkActivity extends Activity implements OnClickListener {
 	private TextView mOutputTextView = null;
 	private Button mComputeWithFullScriptButton = null;
 	private Button mComputeWithScriptLiteButton = null;
+	private CheckBox mComputeInJavaCheckBox = null;
+	private CheckBox mComputeInCppCheckBox = null;
+	private CheckBox mComputeInOpenCVCheckBox = null;
+	private CheckBox mComputeInEigenCheckBox = null;
+	private CheckBox mComputeInRenderScriptCheckBox = null;
+	private CheckBox[] mCheckBoxes = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -44,11 +53,25 @@ public class BenchmarkActivity extends Activity implements OnClickListener {
 		mComputeWithScriptLiteButton = (Button)findViewById(R.id.button_matrixcomputation_scriptlite);
 		mProgressBar = (ProgressBar)findViewById(R.id.progressbar_progress);
 		mOutputTextView = (TextView)findViewById(R.id.textview_matrixcomputation_output);
+		mComputeInJavaCheckBox = (CheckBox)findViewById(R.id.checkbox_matrixcomputation_java);
+		mComputeInCppCheckBox = (CheckBox)findViewById(R.id.checkbox_matrixcomputation_cpp);
+		mComputeInOpenCVCheckBox = (CheckBox)findViewById(R.id.checkbox_matrixcomputation_opencv);
+		mComputeInEigenCheckBox = (CheckBox)findViewById(R.id.checkbox_matrixcomputation_eigen);
+		mComputeInRenderScriptCheckBox = (CheckBox)findViewById(R.id.checkbox_matrixcomputation_renderscript);
 		
 		mComputeWithFullScriptButton.setOnClickListener(this);
 		mComputeWithScriptLiteButton.setOnClickListener(this);
+		mComputeInJavaCheckBox.setOnClickListener(this);
+		mComputeInCppCheckBox.setOnClickListener(this);
+		mComputeInOpenCVCheckBox.setOnClickListener(this);
+		mComputeInEigenCheckBox.setOnClickListener(this);
+		mComputeInRenderScriptCheckBox.setOnClickListener(this);
 		
 		mProgressBar.setMax(100);
+		mCheckBoxes = new CheckBox[] {
+				mComputeInJavaCheckBox, mComputeInCppCheckBox, 
+				mComputeInOpenCVCheckBox, mComputeInEigenCheckBox, 
+				mComputeInRenderScriptCheckBox};
 	}
 	
 	private void setTextView(String str){
@@ -70,19 +93,37 @@ public class BenchmarkActivity extends Activity implements OnClickListener {
 		
 		switch(v.getId()){
 		case R.id.button_matrixcomputation_fullscript:
-			runnable = new BenchmarkRunnable(FLAG_FULL_SCRIPT, mHandler, this.getBaseContext());
+			runnable = new BenchmarkRunnable(FLAG_FULL_SCRIPT, mHandler, this.getBaseContext(), createScript());
+			v.setPressed(false);
+			runThread(runnable);
 			break;
 		case R.id.button_matrixcomputation_scriptlite:
-			runnable = new BenchmarkRunnable(FLAG_SCRIPT_LITE, mHandler, this.getBaseContext());
+			runnable = new BenchmarkRunnable(FLAG_SCRIPT_LITE, mHandler, this.getBaseContext(), createScript());
+			v.setPressed(false);
+			runThread(runnable);
 			break;
+			default:
+				break;
+		}
+	}
+	
+	private boolean[] createScript() {
+		int length = mCheckBoxes.length;
+		boolean[] script = new boolean[length];
+		
+		for (int i = 0; i < length; i++) {
+			if (mCheckBoxes[i].isChecked()) script[i] = true;
+			else script[i] = false;
 		}
 		
+		return script;
+	}
+	
+	private void runThread(BenchmarkRunnable runnable) {
 		Thread thread = new Thread(runnable);
 		thread.start();
 		
 		thread = null;
-		
-		v.setPressed(false);
 	}
 	
     private Handler mHandler = new Handler(){
