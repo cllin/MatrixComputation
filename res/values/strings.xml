@@ -8,6 +8,11 @@
 	<string name="matrixcomputation_fullscript">Run Full Script</string>
 	<string name="matrixcomputation_scriptlite">Run Script Lite</string>
 	<string name="matrixcomputation_result">The result will be shown here</string>
+	<string name="checkbox_matrixcomputation_java">Java</string>
+	<string name="checkbox_matrixcomputation_cpp">C++</string>
+	<string name="checkbox_matrixcomputation_opencv">OpenCV</string>
+	<string name="checkbox_matrixcomputation_eigen">Eigen</string>
+	<string name="checkbox_matrixcomputation_renderscript">RenderScript</string>
 	<string name="progressbar_description"></string>
 	
 </resources>
