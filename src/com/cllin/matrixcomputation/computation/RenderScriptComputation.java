@@ -29,7 +29,7 @@ public class RenderScriptComputation extends MatrixComputation {
 		float[] tmpA, tmpB;
 		float[] input;
 		
-
+//		Input Vector
 		rows = 1;
 		cols = 400;
 		size = rows * cols;
@@ -45,6 +45,7 @@ public class RenderScriptComputation extends MatrixComputation {
 			}
 		}
 		
+//		Matrices
 		rows = a.length;
 		cols = a[0].length;
 		size = rows * cols;
