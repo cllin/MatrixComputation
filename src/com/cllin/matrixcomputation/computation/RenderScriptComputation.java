@@ -30,7 +30,7 @@ public class RenderScriptComputation extends MatrixComputation {
 		float[] input;
 		
 
-		rows = 10;
+		rows = 1;
 		cols = 400;
 		size = rows * cols;
 		input = new float[size];

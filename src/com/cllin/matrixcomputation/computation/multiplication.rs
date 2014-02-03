@@ -36,13 +36,15 @@ void init(){
 void compute(){
  	int start = rsUptimeNanos();
  	
-	rsForEach(gScript, gInputB, gInputC);
-	rsForEach(gScript, gInputA, gInputB);
-	rsForEach(gScript, gOut, gInputD);
-	rsForEach(gScript, gOut, gInput);
+ 	for (int i = 0; i < 1000; i++) {
+		rsForEach(gScript, gInputB, gInputC);
+		rsForEach(gScript, gInputA, gInputB);
+		rsForEach(gScript, gOut, gInputD);
+		rsForEach(gScript, gOut, gInput);
+ 	}
+ 	
 	
 	int end = rsUptimeNanos();
  	int cost = end - start;
- 	rsDebug("size=", rows);
  	rsDebug("time cost(ns)=", cost);
 }
