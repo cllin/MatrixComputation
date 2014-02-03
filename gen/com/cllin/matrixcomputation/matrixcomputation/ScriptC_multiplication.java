@@ -54,7 +54,18 @@ public class ScriptC_multiplication extends ScriptC {
     private FieldPacker __rs_fp_ALLOCATION;
     private FieldPacker __rs_fp_I32;
     private FieldPacker __rs_fp_SCRIPT;
-    private final static int mExportVarIdx_gInputA = 0;
+    private final static int mExportVarIdx_gInput = 0;
+    private Allocation mExportVar_gInput;
+    public synchronized void set_gInput(Allocation v) {
+        setVar(mExportVarIdx_gInput, v);
+        mExportVar_gInput = v;
+    }
+
+    public Allocation get_gInput() {
+        return mExportVar_gInput;
+    }
+
+    private final static int mExportVarIdx_gInputA = 1;
     private Allocation mExportVar_gInputA;
     public synchronized void set_gInputA(Allocation v) {
         setVar(mExportVarIdx_gInputA, v);
@@ -65,7 +76,7 @@ public class ScriptC_multiplication extends ScriptC {
         return mExportVar_gInputA;
     }
 
-    private final static int mExportVarIdx_gInputB = 1;
+    private final static int mExportVarIdx_gInputB = 2;
     private Allocation mExportVar_gInputB;
     public synchronized void set_gInputB(Allocation v) {
         setVar(mExportVarIdx_gInputB, v);
@@ -76,7 +87,29 @@ public class ScriptC_multiplication extends ScriptC {
         return mExportVar_gInputB;
     }
 
-    private final static int mExportVarIdx_gOut = 2;
+    private final static int mExportVarIdx_gInputC = 3;
+    private Allocation mExportVar_gInputC;
+    public synchronized void set_gInputC(Allocation v) {
+        setVar(mExportVarIdx_gInputC, v);
+        mExportVar_gInputC = v;
+    }
+
+    public Allocation get_gInputC() {
+        return mExportVar_gInputC;
+    }
+
+    private final static int mExportVarIdx_gInputD = 4;
+    private Allocation mExportVar_gInputD;
+    public synchronized void set_gInputD(Allocation v) {
+        setVar(mExportVarIdx_gInputD, v);
+        mExportVar_gInputD = v;
+    }
+
+    public Allocation get_gInputD() {
+        return mExportVar_gInputD;
+    }
+
+    private final static int mExportVarIdx_gOut = 5;
     private Allocation mExportVar_gOut;
     public synchronized void set_gOut(Allocation v) {
         setVar(mExportVarIdx_gOut, v);
@@ -87,7 +120,7 @@ public class ScriptC_multiplication extends ScriptC {
         return mExportVar_gOut;
     }
 
-    private final static int mExportVarIdx_gScript = 3;
+    private final static int mExportVarIdx_gScript = 6;
     private Script mExportVar_gScript;
     public synchronized void set_gScript(Script v) {
         setVar(mExportVarIdx_gScript, v);
@@ -98,7 +131,7 @@ public class ScriptC_multiplication extends ScriptC {
         return mExportVar_gScript;
     }
 
-    private final static int mExportVarIdx_rows = 4;
+    private final static int mExportVarIdx_rows = 7;
     private int mExportVar_rows;
     public synchronized void set_rows(int v) {
         setVar(mExportVarIdx_rows, v);
@@ -109,7 +142,7 @@ public class ScriptC_multiplication extends ScriptC {
         return mExportVar_rows;
     }
 
-    private final static int mExportVarIdx_cols = 5;
+    private final static int mExportVarIdx_cols = 8;
     private int mExportVar_cols;
     public synchronized void set_cols(int v) {
         setVar(mExportVarIdx_cols, v);

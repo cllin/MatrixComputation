@@ -3,8 +3,11 @@
 
 #define MSG_TAG "MatrixComputationFromRenderScript"
 
+rs_allocation gInput;
 rs_allocation gInputA;
 rs_allocation gInputB;
+rs_allocation gInputC;
+rs_allocation gInputD;
 rs_allocation gOut;
 rs_script gScript;
 
@@ -20,7 +23,6 @@ void root(const float *in, float *out) {
  		for(int j = 0; j < cols; j++){
  			output[i * cols + j] = 0;
  			for(int k = 0; k < dim; k++){
- 				//float value = in[i * cols + k] * out[k * cols + j] + out[i * cols + j];
  				output[i * cols + j] += in[i * cols + k] * out[k * cols + j];
  			}
  		}
@@ -34,7 +36,10 @@ void init(){
 void compute(){
  	int start = rsUptimeNanos();
  	
+	rsForEach(gScript, gInputB, gInputC);
 	rsForEach(gScript, gInputA, gInputB);
+	rsForEach(gScript, gOut, gInputD);
+	rsForEach(gScript, gOut, gInput);
 	
 	int end = rsUptimeNanos();
  	int cost = end - start;

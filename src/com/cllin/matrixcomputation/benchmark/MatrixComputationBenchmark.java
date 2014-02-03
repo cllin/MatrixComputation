@@ -44,7 +44,8 @@ public class MatrixComputationBenchmark {
 		case FLAG_FULL_SCRIPT:
 			nTests = 1;
 //			mTestScript = new int[]{500, 600, 700, 800, 900, 1000, 2000, 3000};
-			mTestScript = new int[]{500, 600, 700, 800, 900, 1000, 2000};
+//			mTestScript = new int[]{500, 600, 700, 800, 900, 1000, 2000};
+			mTestScript = new int[]{800};
 			break;
 		case FLAG_SCRIPT_LITE:
 			nTests = 1;
@@ -63,9 +64,10 @@ public class MatrixComputationBenchmark {
 
 			int size = mTestScript[i];
 			
+//			TODO
 			mTimeRecorder.recordNow(TimeRecorder.KEY_INITIALIZATION_START);
-			float[][] a = MatrixFactory.getFloatMatrix(size, size);
-			float[][] b = MatrixFactory.getFloatMatrix(size, size);
+			float[][] a = MatrixFactory.getFloatMatrix(400, 800);
+			float[][] b = MatrixFactory.getFloatMatrix(800, 800);
 			mTimeRecorder.recordNow(TimeRecorder.KEY_INITIALIZATION_END);
 			
 			benchmarkTestNative(a, b);

@@ -10,6 +10,7 @@ public class MatrixComputation implements SuperMatrixComputation {
 	@Override
 	public boolean isValidMatrix(float[][] a, float[][] b) {
 		if (a.length < 1 || b.length < 1 || a[0].length < 1 || b[0].length < 1) return false;
+		if (a[0].length != b.length) return false;
 		return true;
 	}
 
