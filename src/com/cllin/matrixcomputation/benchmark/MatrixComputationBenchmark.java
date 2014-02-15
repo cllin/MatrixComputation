@@ -25,49 +25,30 @@ public class MatrixComputationBenchmark {
 	private static final int FLAG_SHOW_PROGRESS = 20;
 	
 	private int nTests = 1;
-	private int[] mTestScript;
-	private boolean[] mScript;
 	
 	private TimeRecorder mTimeRecorder;
 	
 	private Handler mHandler;
 	private Context mContext;
 	
-	public MatrixComputationBenchmark(Handler handler, Context context, boolean[] script){
+	public MatrixComputationBenchmark(Handler handler, Context context){
 		mHandler = handler;
 		mContext = context;
-		mScript = script;
 	}
 
 	public void runBenchmarkTest(int flag) { 
-		switch (flag) {
-		case FLAG_FULL_SCRIPT:
-			nTests = 1;
-//			mTestScript = new int[]{500, 600, 700, 800, 900, 1000, 2000, 3000};
-//			mTestScript = new int[]{500, 600, 700, 800, 900, 1000, 2000};
-			mTestScript = new int[]{800};
-			break;
-		case FLAG_SCRIPT_LITE:
-			nTests = 1;
-			mTestScript = new int[]{100, 200, 300, 400, 500};
-			break;
-		}
-		
+		int[] testScript = getTestScript(flag);
 		BenchmarkResult result = new BenchmarkResult(nTests);
+		
 		mTimeRecorder = new TimeRecorder(nTests);
-		
-		Message msg;
-		
 		mTimeRecorder.recordNow(TimeRecorder.KEY_ENTIRE_START);
-		for (int i = 0; i < mTestScript.length; i++) {
-			Log.d(MSG_TAG, "size=" + mTestScript[i]);
-
-			int size = mTestScript[i];
+		for (int i = 0; i < testScript.length; i++) {
+			int size = testScript[i];
+			Log.d(MSG_TAG, "size=" + size);
 			
-//			TODO
 			mTimeRecorder.recordNow(TimeRecorder.KEY_INITIALIZATION_START);
-			float[][] a = MatrixFactory.getFloatMatrix(400, 800);
-			float[][] b = MatrixFactory.getFloatMatrix(800, 800);
+			float[][] a = MatrixFactory.getFloatMatrix(size, size);
+			float[][] b = MatrixFactory.getFloatMatrix(size, size);
 			mTimeRecorder.recordNow(TimeRecorder.KEY_INITIALIZATION_END);
 			
 			benchmarkTestNative(a, b);
@@ -84,24 +65,12 @@ public class MatrixComputationBenchmark {
 					mTimeRecorder.getTime(TimeRecorder.FLAG_GET_EIGEN),
 					mTimeRecorder.getTime(TimeRecorder.FLAG_GET_RENDERSCRIPT)));
 			
-			msg = Message.obtain();
-			msg.what = FLAG_SHOW_PROGRESS;
-			msg.arg1 = i;
-			msg.arg2 = mTestScript.length;
-			msg.obj = size;
-			mHandler.dispatchMessage(msg);
+			updateProgressToUIThread(testScript.length, i, size);
 		}
 		mTimeRecorder.recordNow(TimeRecorder.KEY_ENTIRE_END);
 		result.setTotal(mTimeRecorder.getTime(TimeRecorder.FLAG_GET_ENTIRE));
 		
-		String output = "Nothing returned!";
-		output = parseResult(result);
-		msg = Message.obtain();
-		msg = mHandler.obtainMessage(FLAG_SHOW_OUTPUT, output);
-		mHandler.dispatchMessage(msg);
-		
-		RecordWriter recorder = new RecordWriter();
-		recorder.record(result);
+		returnFinalResultToUIThread(result);
 		
 		Log.d(MSG_TAG, "Finished");
 	}
@@ -138,7 +107,6 @@ public class MatrixComputationBenchmark {
 	 */
 	private void benchmarkTestOpenCV(float[][] a, float[][] b) {
 		mTimeRecorder.recordNow(TimeRecorder.KEY_OPENCV_START);
-		
 //		try {
 //			OpenCVMatrixComputation computation = new OpenCVMatrixComputation();
 //			for (int i = 0; i < nTests; i++) computation.matrixMultiplication(a, b);
@@ -146,7 +114,6 @@ public class MatrixComputationBenchmark {
 //			e.printStackTrace();
 //			Log.e(MSG_TAG, "Error happened when computing with OpenCV");
 //		}
-		
 		mTimeRecorder.recordNow(TimeRecorder.KEY_OPENCV_END);
 	}
 	
@@ -160,7 +127,6 @@ public class MatrixComputationBenchmark {
 //			e.printStackTrace();
 //			Log.e(MSG_TAG, "Error happened when computing with Eigen");
 //		}
-		
 		mTimeRecorder.recordNow(TimeRecorder.KEY_EIGEN_END);	
 	}
 	
@@ -176,6 +142,43 @@ public class MatrixComputationBenchmark {
 		}
 		
 		mTimeRecorder.recordNow(TimeRecorder.KEY_RENDERSCRIPT_END);	
+	}
+	
+	private boolean correctnessCheck(float[][] java, float[][] result) {
+		if (result == null) {
+			Log.e(MSG_TAG, "Oops, the result is null!");
+			return false;
+		}
+		
+		if (result.length == 0) {
+			Log.e(MSG_TAG, "Oops, the length of the matrix is 0!");
+			return false;
+		}
+		
+		int cols = result.length;
+		if (cols != result.length || cols == 0) {
+			Log.e(MSG_TAG, "Oops, the number of columns of the matrix is incorrect!");
+			return false;
+		}
+		
+		int rows = result[0].length;
+		if (rows != result[0].length || rows == 0) {
+			Log.e(MSG_TAG, "Oops, the number of rows of the matrix is incorrect!");
+			return false;
+		}
+		
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < cols; j++) {
+				if (result[i][j] != result[i][j]) {
+					Log.e(MSG_TAG, "Oops, the result is incorrect!");
+					return false;
+				}
+			}
+		}
+		
+		Log.e(MSG_TAG, "The result from RS is correct, great!");
+		
+		return true;
 	}
 	
 	private String parseResult(BenchmarkResult result){
@@ -203,6 +206,47 @@ public class MatrixComputationBenchmark {
 		
 		buffer.append("\n\nThe entire test took ").append(result.getTotal()).append(" ms");
 		return buffer.toString();
+	}
+	
+	private int[] getTestScript(int flag) {
+		int[] testScript = null;
+		
+		switch (flag) {
+		case FLAG_FULL_SCRIPT:
+			nTests = 1;
+			testScript = new int[]{500, 600, 700, 800, 900, 1000};
+			break;
+		case FLAG_SCRIPT_LITE:
+			nTests = 1;
+//			testScript = new int[]{500, 600, 700, 800, 900, 1000, 2000};
+			testScript = new int[]{100, 200, 300, 400, 500};
+			break;
+		}
+		
+		return testScript;
+	}
+	
+	private void updateProgressToUIThread(int numTests, int currentTest, int matrixSize) {
+		Message msg = Message.obtain();
+		msg.what = FLAG_SHOW_PROGRESS;
+		msg.arg1 = currentTest;
+		msg.arg2 = numTests;
+		msg.obj = matrixSize;
+		mHandler.dispatchMessage(msg);
+	}
+	
+	private void returnFinalResultToUIThread(BenchmarkResult result) {
+		String output = "Nothing returned!";
+		Message msg = Message.obtain();
+		
+		output = parseResult(result);
+		msg = mHandler.obtainMessage(FLAG_SHOW_OUTPUT, output);
+		mHandler.dispatchMessage(msg);
+	}
+	
+	private void writeRecordToCSV(BenchmarkResult result){
+		RecordWriter recorder = new RecordWriter();
+		recorder.record(result);
 	}
 	
 	private native float[][] matrixComputationByNative(float[][] floatsA, float[][] floatsB);

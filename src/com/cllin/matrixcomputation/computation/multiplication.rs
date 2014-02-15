@@ -1,33 +1,31 @@
 #pragma version(1)
-#pragma rs java_package_name(com.cllin.matrixcomputation.matrixcomputation)
+#pragma rs java_package_name(com.cllin.matrixcomputation.computation)
 
 #define MSG_TAG "MatrixComputationFromRenderScript"
 
-rs_allocation gInput;
+rs_script gScript;
 rs_allocation gInputA;
 rs_allocation gInputB;
-rs_allocation gInputC;
-rs_allocation gInputD;
-rs_allocation gOut;
-rs_script gScript;
+float* gOut;
 
 int rows = 0;
 int cols = 0;
+int count = 0;
 
-void root(const float *in, float *out) {
- 	int size = rows * cols;
+void root(const float *a, float *b) {
+	if (count != 0) return;
+ 	count++;
+	
  	int dim = rows;
- 	float output[rows * cols];
- 	
 	for(int i = 0; i < rows; i++){
  		for(int j = 0; j < cols; j++){
- 			output[i * cols + j] = 0;
+ 			gOut[i * cols + j] = 0;
  			for(int k = 0; k < dim; k++){
- 				output[i * cols + j] += in[i * cols + k] * out[k * cols + j];
+ 				gOut[i * cols + j] += (a[i * cols + k] * b[k * cols + j]);
  			}
  		}
  	}
-  }
+}
 
 void init(){
 	rsDebug("Called init", rsUptimeMillis());
@@ -36,14 +34,8 @@ void init(){
 void compute(){
  	int start = rsUptimeNanos();
  	
- 	for (int i = 0; i < 1000; i++) {
-		rsForEach(gScript, gInputB, gInputC);
-		rsForEach(gScript, gInputA, gInputB);
-		rsForEach(gScript, gOut, gInputD);
-		rsForEach(gScript, gOut, gInput);
- 	}
+ 	rsForEach(gScript, gInputA, gInputB);
  	
-	
 	int end = rsUptimeNanos();
  	int cost = end - start;
  	rsDebug("time cost(ns)=", cost);

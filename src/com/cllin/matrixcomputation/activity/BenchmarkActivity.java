@@ -91,12 +91,12 @@ public class BenchmarkActivity extends Activity implements OnClickListener {
 		
 		switch(v.getId()){
 		case R.id.button_matrixcomputation_fullscript:
-			runnable = new BenchmarkRunnable(FLAG_FULL_SCRIPT, mHandler, this.getBaseContext(), createScript());
+			runnable = new BenchmarkRunnable(FLAG_FULL_SCRIPT, mHandler, this.getBaseContext());
 			v.setPressed(false);
 			runThread(runnable);
 			break;
 		case R.id.button_matrixcomputation_scriptlite:
-			runnable = new BenchmarkRunnable(FLAG_SCRIPT_LITE, mHandler, this.getBaseContext(), createScript());
+			runnable = new BenchmarkRunnable(FLAG_SCRIPT_LITE, mHandler, this.getBaseContext());
 			v.setPressed(false);
 			runThread(runnable);
 			break;
@@ -105,6 +105,8 @@ public class BenchmarkActivity extends Activity implements OnClickListener {
 		}
 	}
 	
+//	TODO USER SHOULD ABLE TO CUSTOMIZE THE SCRIPT!
+	@SuppressWarnings("unused")
 	private boolean[] createScript() {
 		int length = mCheckBoxes.length;
 		boolean[] script = new boolean[length];
