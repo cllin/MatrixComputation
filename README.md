@@ -38,4 +38,7 @@ This approach is faster than Java. Note that [Java Native Interface](http://docs
 [Eigen] (http://eigen.tuxfamily.org/index.php?title=Main_Page) is another choice for computation. Eigen usually outperform OpenCV on Android devices.
 
 ###<a name="6"></a>RenderScript
-[RenderScript] (http://developer.android.com/guide/topics/renderscript/compute.html) is *a framework for running computationally intensive tasks at high performance on Android*, usually used for image processing on Android devices. It accelerates the computation by running on GPUs. Please note that RenderScript is device-dependent. Version problem limits the compatibility of RenderScript.
+[RenderScript] (http://developer.android.com/guide/topics/renderscript/compute.html) is a framework for running computationally intensive tasks at high performance on Android, usually used for image processing on Android devices. It accelerates the computation by running on GPUs. Please note that RenderScript is device-dependent. Version problem limits the compatibility of RenderScript.
+
+======
+Ching-Lun Lin, clallenlin@sv.cmu.edu, 2014
