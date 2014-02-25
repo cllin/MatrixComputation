@@ -1,7 +1,9 @@
 package com.cllin.matrixcomputation.data;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 
+import com.cllin.matrixcomputation.activity.BenchmarkApplication;
 import com.cllin.matrixcomputation.data.BenchmarkResult.Test;
 
 @SuppressWarnings("serial")
@@ -59,37 +61,39 @@ public class BenchmarkResult extends ArrayList<Test>{
 		return totalTime;
 	}
 	
-	public class Test extends ArrayList<Long> {
-		public static final int MATRIX_SIZE = 0;
-		public static final int INITIALIZATION_CONSUMPTION = 1;
-		public static final int JAVA_CONSUMPTION = 2;
-		public static final int CPP_CONSUMPTION = 3;
-		public static final int OPENCV_CONSUMPTION = 4;
-		public static final int EIGEN_CONSUMPTION = 5;
-		public static final int RENDERSCRIPT_CONSUMPTION = 6;
+	public class Test {
+		private int matrixSize;
+		private long initialization;
+		private Hashtable<String, Long> mTimeRecord;
 		
-		public Test(int size, long init, long java, long cpp, long opencv, long eigen, long rs){
-			this.add(Long.valueOf(size));
-			this.add(init);
-			this.add(java);
-			this.add(cpp);
-			this.add(opencv);
-			this.add(eigen);
-			this.add(rs);
+		public Test(int size, Hashtable<String, Long> record){
+			this.matrixSize = size;
+			this.initialization = record.get(BenchmarkApplication.KEY_INITIALIZE);
+			
+			record.remove(BenchmarkApplication.KEY_INITIALIZE);
+			this.mTimeRecord = record;
 		}
 		
 	    /**
-	     * Get the value of matrix size or the time cost of a specific test
+	     * Get the value of the time cost of a specific test
 	     *
-	     * @param key		key of the expected value, Test.matrixSize for the size, etc.
+	     * @param key		key of the expected value
 	     * @return			the expected value
-	     * @exception		ArrayIndexOutOfBoundsException if the key is out of bound. 
-	     * 					Currently the maximum value is 6, stands for renderscriptConsumption
+	     * @exception		Exception if the table does not contain a value for key
 	     */
-		public long getValue(int key) throws ArrayIndexOutOfBoundsException {
-			if (key > this.size()) throw new ArrayIndexOutOfBoundsException();
+		public long getValue(String key) throws Exception {
+			if (!mTimeRecord.containsKey(key)) throw new Exception("The record does not contain value relating to key: " + key);
 			
-			return this.get(key);
+			return mTimeRecord.get(key);
+		}
+		
+	    /**
+	     * Get the value of the time cost of all tests
+	     *
+	     * @return			a Hashtable that contains time cost of all tests
+	     */
+		public Hashtable<String, Long> getAllValues() {
+			return mTimeRecord;
 		}
 		
 	    /**
@@ -98,16 +102,16 @@ public class BenchmarkResult extends ArrayList<Test>{
 	     * @return			the size of the matrix
 	     */
 		public int getMatrixSize(){
-			return this.get(MATRIX_SIZE).intValue();
+			return this.matrixSize;
 		}
 		
 	    /**
-	     * Get the initialization time of the test
+	     * Get the time cost of initialization
 	     *
-	     * @return			the initialization time of the matrix
+	     * @return			time cost of initialization
 	     */
 		public long getInitialization(){
-			return this.get(INITIALIZATION_CONSUMPTION);
+			return this.initialization;
 		}
 	}
 }

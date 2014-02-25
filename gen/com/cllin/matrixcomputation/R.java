@@ -24,20 +24,35 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int action_settings=0x7f09000a;
-        public static final int button_matrixcomputation_fullscript=0x7f090000;
-        public static final int button_matrixcomputation_scriptlite=0x7f090001;
-        public static final int checkbox_matrixcomputation_cpp=0x7f090003;
-        public static final int checkbox_matrixcomputation_eigen=0x7f090005;
-        public static final int checkbox_matrixcomputation_java=0x7f090002;
-        public static final int checkbox_matrixcomputation_opencv=0x7f090004;
-        public static final int checkbox_matrixcomputation_renderscript=0x7f090006;
-        public static final int layout_matrixcomputation_progress=0x7f090007;
-        public static final int progressbar_progress=0x7f090008;
-        public static final int textview_matrixcomputation_output=0x7f090009;
+        public static final int action_settings=0x7f090016;
+        public static final int button_matrixcomputation_run=0x7f090000;
+        public static final int checkbox_matrixcomputation_100=0x7f090009;
+        public static final int checkbox_matrixcomputation_1000=0x7f090012;
+        public static final int checkbox_matrixcomputation_1500=0x7f090013;
+        public static final int checkbox_matrixcomputation_200=0x7f09000a;
+        public static final int checkbox_matrixcomputation_2000=0x7f090014;
+        public static final int checkbox_matrixcomputation_300=0x7f09000b;
+        public static final int checkbox_matrixcomputation_3000=0x7f090015;
+        public static final int checkbox_matrixcomputation_400=0x7f09000c;
+        public static final int checkbox_matrixcomputation_500=0x7f09000d;
+        public static final int checkbox_matrixcomputation_600=0x7f09000e;
+        public static final int checkbox_matrixcomputation_700=0x7f09000f;
+        public static final int checkbox_matrixcomputation_800=0x7f090010;
+        public static final int checkbox_matrixcomputation_900=0x7f090011;
+        public static final int checkbox_matrixcomputation_cpp=0x7f090005;
+        public static final int checkbox_matrixcomputation_eigen=0x7f090007;
+        public static final int checkbox_matrixcomputation_java=0x7f090004;
+        public static final int checkbox_matrixcomputation_opencv=0x7f090006;
+        public static final int checkbox_matrixcomputation_renderscript=0x7f090008;
+        public static final int layout_matrixcomputation_progress=0x7f090001;
+        public static final int progressbar_progress=0x7f090002;
+        public static final int textview_matrixcomputation_output=0x7f090003;
     }
     public static final class layout {
         public static final int activity_benchmark=0x7f030000;
+        public static final int checkbox_implementations=0x7f030001;
+        public static final int checkbox_matixsizes=0x7f030002;
+        public static final int separator=0x7f030003;
     }
     public static final class menu {
         public static final int main=0x7f080000;
@@ -48,16 +63,28 @@ public final class R {
     public static final class string {
         public static final int action_settings=0x7f060001;
         public static final int app_name=0x7f060000;
-        public static final int checkbox_matrixcomputation_cpp=0x7f060007;
-        public static final int checkbox_matrixcomputation_eigen=0x7f060009;
-        public static final int checkbox_matrixcomputation_java=0x7f060006;
-        public static final int checkbox_matrixcomputation_opencv=0x7f060008;
-        public static final int checkbox_matrixcomputation_renderscript=0x7f06000a;
-        public static final int matrixcomputation_fullscript=0x7f060003;
+        public static final int checkbox_matrixcomputation_100=0x7f06000a;
+        public static final int checkbox_matrixcomputation_1000=0x7f060013;
+        public static final int checkbox_matrixcomputation_1500=0x7f060014;
+        public static final int checkbox_matrixcomputation_200=0x7f06000b;
+        public static final int checkbox_matrixcomputation_2000=0x7f060015;
+        public static final int checkbox_matrixcomputation_300=0x7f06000c;
+        public static final int checkbox_matrixcomputation_3000=0x7f060016;
+        public static final int checkbox_matrixcomputation_400=0x7f06000d;
+        public static final int checkbox_matrixcomputation_500=0x7f06000e;
+        public static final int checkbox_matrixcomputation_600=0x7f06000f;
+        public static final int checkbox_matrixcomputation_700=0x7f060010;
+        public static final int checkbox_matrixcomputation_800=0x7f060011;
+        public static final int checkbox_matrixcomputation_900=0x7f060012;
+        public static final int checkbox_matrixcomputation_cpp=0x7f060006;
+        public static final int checkbox_matrixcomputation_eigen=0x7f060008;
+        public static final int checkbox_matrixcomputation_java=0x7f060005;
+        public static final int checkbox_matrixcomputation_opencv=0x7f060007;
+        public static final int checkbox_matrixcomputation_renderscript=0x7f060009;
         public static final int matrixcomputation_instruction=0x7f060002;
-        public static final int matrixcomputation_result=0x7f060005;
-        public static final int matrixcomputation_scriptlite=0x7f060004;
-        public static final int progressbar_description=0x7f06000b;
+        public static final int matrixcomputation_result=0x7f060004;
+        public static final int matrixcomputation_run=0x7f060003;
+        public static final int progressbar_description=0x7f060017;
     }
     public static final class style {
         /** 

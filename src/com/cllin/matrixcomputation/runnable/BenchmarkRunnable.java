@@ -1,25 +1,21 @@
 package com.cllin.matrixcomputation.runnable;
 
-import com.cllin.matrixcomputation.benchmark.MatrixComputationBenchmark;
-
 import android.content.Context;
 import android.os.Handler;
+
+import com.cllin.matrixcomputation.benchmark.MatrixComputationBenchmark;
+import com.cllin.matrixcomputation.data.Script;
 
 public class BenchmarkRunnable implements Runnable {
 	private MatrixComputationBenchmark mBenchmark = null;
 	private Handler mHandler = null;
 	
-	private int mBenchmarkFlag = FLAG_DEFAULT;
-	
-	private static final int FLAG_DEFAULT = 0;
-	
-	public BenchmarkRunnable(int flag, Handler handler, Context context){
-		mBenchmarkFlag = flag;
+	public BenchmarkRunnable(Handler handler, Context context, Script script){
 		mHandler = handler;
-		mBenchmark = new MatrixComputationBenchmark(mHandler, context);
+		mBenchmark = new MatrixComputationBenchmark(mHandler, context, script);
 	}
 	
 	public void run(){
-		mBenchmark.runBenchmarkTest(mBenchmarkFlag);
+		mBenchmark.runBenchmarkTest();
 	}
 }

@@ -1,18 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     
-    <string name="app_name">MatrixComputation</string>
+    <string name="app_name">Matrix Computation Benchmark</string>
 	<string name="action_settings">Settings</string>
 	
 	<string name="matrixcomputation_instruction">This activity performs the benckmark test of matrix computation in various implementations\n</string>
-	<string name="matrixcomputation_fullscript">Run Full Script</string>
-	<string name="matrixcomputation_scriptlite">Run Script Lite</string>
+	<string name="matrixcomputation_run">Run Script!</string>
 	<string name="matrixcomputation_result">The result will be shown here</string>
+	
 	<string name="checkbox_matrixcomputation_java">Java</string>
 	<string name="checkbox_matrixcomputation_cpp">C++</string>
 	<string name="checkbox_matrixcomputation_opencv">OpenCV</string>
 	<string name="checkbox_matrixcomputation_eigen">Eigen</string>
 	<string name="checkbox_matrixcomputation_renderscript">RenderScript</string>
+	
+	<string name="checkbox_matrixcomputation_100">100</string>
+	<string name="checkbox_matrixcomputation_200">200</string>
+	<string name="checkbox_matrixcomputation_300">300</string>
+	<string name="checkbox_matrixcomputation_400">400</string>
+	<string name="checkbox_matrixcomputation_500">500</string>
+	<string name="checkbox_matrixcomputation_600">600</string>
+	<string name="checkbox_matrixcomputation_700">700</string>
+	<string name="checkbox_matrixcomputation_800">800</string>
+	<string name="checkbox_matrixcomputation_900">900</string>
+	<string name="checkbox_matrixcomputation_1000">1000</string>
+	<string name="checkbox_matrixcomputation_1500">1500</string>
+	<string name="checkbox_matrixcomputation_2000">2000</string>
+	<string name="checkbox_matrixcomputation_3000">3000</string>
+	
 	<string name="progressbar_description"></string>
 	
 </resources>

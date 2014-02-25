@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Hashtable;
 
 import android.os.Environment;
 import android.text.format.Time;
@@ -35,7 +36,7 @@ public class RecordWriter {
 		
 		Class listClass = list.get(0).getClass();
 		if (listClass == String.class) mFlag = FLAG_RECORDING_STRING;
-		else if(listClass == BenchmarkResult.Test.class) mFlag = FLAG_RECORDING_BENCHMARKRESULT;
+		else if (listClass == BenchmarkResult.Test.class) mFlag = FLAG_RECORDING_BENCHMARKRESULT;
 		
 		createFile();
 		
@@ -58,16 +59,20 @@ public class RecordWriter {
 			case FLAG_RECORDING_BENCHMARKRESULT:
 				buffer.append("Matrix Size,Initialization,C++,Java,OpenCV,Eigen,RenderScript");
 				buffer.append("\r\n");
-				for(Test test : (ArrayList<Test>)list){
+				for (Test test : (ArrayList<Test>) list){
 					
 					buffer.append(test.getMatrixSize());
 					buffer.append(',');
 					buffer.append(test.getInitialization());
 					buffer.append(',');
 					
-					for (int i = Test.CPP_CONSUMPTION; i <= Test.RENDERSCRIPT_CONSUMPTION; i++) {
-						buffer.append(test.getValue(i));
-						buffer.append(',');
+					Hashtable<String, Long> records = test.getAllValues();
+					for (String key : records.keySet()) {
+						if (records.contains(key)) {
+							buffer.append(records.get(key)).append(',');
+						} else {
+							buffer.append(',');
+						}
 					}
 					
 					buffer.append("\r\n");
@@ -100,13 +105,13 @@ public class RecordWriter {
 		
 		try {
 			File folder = new File(Environment.getExternalStorageDirectory() + PATH_FOLDER);
-			if(!folder.exists()){
+			if (!folder.exists()) {
 				folder.mkdir();
 			}
 			
 			mFile = new File(Environment.getExternalStorageDirectory() + filePath);
 			mFile.createNewFile();
-		}catch(IOException e) {
+		} catch(IOException e) {
 			e.printStackTrace();
 		}		
 	}

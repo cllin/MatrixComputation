@@ -11,91 +11,33 @@
 		android:layout_marginLeft="10pt"
 		android:layout_marginRight="10pt"
 		android:gravity="center_horizontal" >
-			<TextView
-		        android:layout_width="fill_parent"
-		        android:layout_height="wrap_content"
-		        android:textSize="16sp"
-		        android:fontFamily="sans-serif-light"
-		        android:text="@string/matrixcomputation_instruction" />
+		<TextView
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:textSize="16sp"
+	        android:fontFamily="sans-serif-light"
+	        android:text="@string/matrixcomputation_instruction" />
 	
 		<LinearLayout
 		    android:layout_width="match_parent"
 		    android:layout_height="wrap_content"
 			android:orientation="vertical"
 			android:gravity="center" >
+			
+			<include layout="@layout/checkbox_implementations" />
+			
+			<include layout="@layout/separator" />
+			
+			<include layout="@layout/checkbox_matixsizes" />
+		    
 			<Button
-				android:id="@+id/button_matrixcomputation_fullscript"
+				android:id="@+id/button_matrixcomputation_run"
 				android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
-				android:text="@string/matrixcomputation_fullscript" />
-			<Button
-				android:id="@+id/button_matrixcomputation_scriptlite"
-				android:layout_width="fill_parent"
-				android:layout_height="wrap_content"
-				android:text="@string/matrixcomputation_scriptlite" />
+				android:text="@string/matrixcomputation_run" />
 		</LinearLayout>
 
-		<LinearLayout 
-		    android:layout_width="fill_parent"
-		    android:layout_height="wrap_content"
-		    android:orientation="vertical" >
-		    <LinearLayout 
-			    android:layout_width="fill_parent"
-			    android:layout_height="wrap_content"
-			    android:orientation="horizontal"
-			    android:gravity="center" >
-			    <CheckBox android:id="@+id/checkbox_matrixcomputation_java"
-			        android:layout_width="wrap_content"
-			        android:layout_height="wrap_content"
-			        android:text="@string/checkbox_matrixcomputation_java"
-					android:textSize="14sp"
-					android:fontFamily="sans-serif-light"
-			        android:onClick="onCheckboxClicked"/>
-			    <CheckBox android:id="@+id/checkbox_matrixcomputation_cpp"
-			        android:layout_width="wrap_content"
-			        android:layout_height="wrap_content"
-			        android:text="@string/checkbox_matrixcomputation_cpp"
-					android:textSize="14sp"
-		        	android:fontFamily="sans-serif-light"
-			        android:onClick="onCheckboxClicked"/>
-				<CheckBox android:id="@+id/checkbox_matrixcomputation_opencv"
-			        android:layout_width="wrap_content"
-			        android:layout_height="wrap_content"
-			        android:text="@string/checkbox_matrixcomputation_opencv"
-					android:textSize="14sp"
-					android:fontFamily="sans-serif-light"		        
-			        android:onClick="onCheckboxClicked"/>
-			</LinearLayout>
-			<LinearLayout
-				android:layout_width="fill_parent"
-			    android:layout_height="wrap_content"
-			    android:orientation="horizontal"
-			    android:gravity="center" >
-			    <CheckBox android:id="@+id/checkbox_matrixcomputation_eigen"
-			        android:layout_width="wrap_content"
-			        android:layout_height="wrap_content"
-			        android:text="@string/checkbox_matrixcomputation_eigen"
-					android:textSize="14sp"
-					android:fontFamily="sans-serif-light"		        
-			        android:onClick="onCheckboxClicked"/>
-			    <CheckBox android:id="@+id/checkbox_matrixcomputation_renderscript"
-			        android:layout_width="wrap_content"
-			        android:layout_height="wrap_content"
-			        android:textSize="14sp"
-					android:fontFamily="sans-serif-light"
-			        android:text="@string/checkbox_matrixcomputation_renderscript"
-			        android:onClick="onCheckboxClicked"/>				
-			</LinearLayout>
-		</LinearLayout>
-		
-		<View
-	    	android:layout_width="fill_parent"
-	    	android:layout_height="1dp"
-	    	android:layout_marginTop="5pt"
-	    	android:layout_marginBottom="5pt"
-	    	android:layout_marginLeft="-5pt"
-	    	android:layout_marginRight="-5pt"
-	    	android:background="@android:color/darker_gray"/>
+		<include layout="@layout/separator" />"
 			
 		<LinearLayout
 		    android:id="@+id/layout_matrixcomputation_progress"
